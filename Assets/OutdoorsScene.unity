@@ -2359,6 +2359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 500
+  camera: {fileID: 330585543}
   topClamp: -90
   bottomClamp: 90
 --- !u!4 &1844588133
