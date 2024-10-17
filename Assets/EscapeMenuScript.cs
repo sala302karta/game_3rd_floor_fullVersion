@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class EscapeMenuScript : MonoBehaviour
 {
-    private bool isDisplayed = false;
+    public bool isDisplayedOnDefault = false;
+    public GameObject canvasGameObject = null;
+
+    private bool isDisplayed;
 
     private void Start()
     {
+        isDisplayed = isDisplayedOnDefault;
         UpdateFromIsDisplayed();
     }
 
@@ -27,7 +31,7 @@ public class EscapeMenuScript : MonoBehaviour
 
     private void UpdateFromIsDisplayed()
     {
-        GetComponent<Canvas>().enabled = isDisplayed;
+        canvasGameObject.SetActive(isDisplayed);
         Time.timeScale = isDisplayed ? 0 : 1;
         Cursor.visible = isDisplayed;
         Cursor.lockState = isDisplayed ? CursorLockMode.None : CursorLockMode.Locked;
