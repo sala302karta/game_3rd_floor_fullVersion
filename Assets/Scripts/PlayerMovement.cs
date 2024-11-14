@@ -59,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
         {
             GameObject camera = this.gameObject.transform.Find("Main Camera").gameObject;
             camera.transform.Translate(new Vector3(0f, -0.6f, 0f));
-            speed = 5f;
+            speed = 2f;
         }
         if (Input.GetKeyUp("left shift"))
         {
