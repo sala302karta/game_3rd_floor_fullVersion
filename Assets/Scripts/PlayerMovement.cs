@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.XR.CoreUtils;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -50,6 +53,19 @@ public class PlayerMovement : MonoBehaviour
         {
             //Actually jumping
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+        //Crouch & sneak??
+        if (Input.GetKeyDown("left shift"))
+        {
+            GameObject camera = this.gameObject.transform.Find("Main Camera").gameObject;
+            camera.transform.Translate(new Vector3(0f, -0.6f, 0f));
+            speed = 5f;
+        }
+        if (Input.GetKeyUp("left shift"))
+        {
+            GameObject camera = this.gameObject.transform.Find("Main Camera").gameObject;
+            camera.transform.Translate(new Vector3(0f, 0.6f, 0f));
+            speed = 12f;
         }
 
         //Falling down

@@ -17,6 +17,7 @@ public class buletkiler : MonoBehaviour
         if(this.gameObject.name == "bullet(Clone)")
         {
             this.gameObject.GetComponent<TrailRenderer>().enabled = true;
+            Destroy(this.gameObject, 5f);
         }
 
     }
@@ -28,7 +29,7 @@ public class buletkiler : MonoBehaviour
             this.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             ParticleSystem explode = this.gameObject.GetComponent<ParticleSystem>();
             explode.Play();
-            Destroy(this.gameObject, 0.01f);
+            Destroy(this.gameObject, 0.08f);
         }
     }
 
