@@ -15,6 +15,7 @@ public class ProjectileGunTutorial : MonoBehaviour
     public float timeBetweenShooting, spread, reloadTime, timeBetweenShots;
     public int magazineSize, bulletsPerTap;
     public bool allowButtonHold;
+    public float damage;
 
     int bulletsLeft, bulletsShot;
 
@@ -76,39 +77,42 @@ public class ProjectileGunTutorial : MonoBehaviour
     {
         readyToShoot = false;
 
-        //Find the exact hit position using a raycast
-        Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0)); //Just a ray through the middle of your current view
+        float x = Random.Range(-spread, spread);
+        float y = Random.Range(-spread, spread);
+
+        Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f + x, 0.5f + y, 0)); //Just a ray through the middle of your current view
+
         RaycastHit hit;
 
         //check if ray hits something
-        // Vector3 targetPoint;
-        // if (Physics.Raycast(ray, out hit))
-        //     targetPoint = hit.point;
-        // else
-        //     targetPoint = ray.GetPoint(75);
-        Vector3 targetPoint = ray.GetPoint(5f);
-         //Just a point far away from the player
+        Vector3 targetPoint;
+        if (Physics.Raycast(ray, out hit))
+        {
+            targetPoint = hit.point;
+            LivingObjectStats stats;
+            hit.collider.gameObject.TryGetComponent(out stats);
+            if (stats != null)
+            {
+                stats.Damage(damage);
+            }
+        }
+        else
+        {
+            targetPoint = ray.GetPoint(5f);
+        }
 
         //Calculate direction from attackPoint to targetPoint
-        Vector3 directionWithoutSpread = targetPoint - attackPoint.position;
-
-        //Calculate spread
-        float x = Random.Range(-spread, spread);
-        float y = Random.Range(-spread, spread);
-        float z = Random.Range(-spread, spread);
-
-        //Calculate new direction with spread
-        Vector3 directionWithSpread = directionWithoutSpread + new Vector3(x, y, z); //Just add spread to last direction
+        Vector3 direction = targetPoint - attackPoint.position;
 
         //Instantiate bullet/projectile
         GameObject currentBullet = Instantiate(bullet, attackPoint.position, Quaternion.identity);
 
         //store instantiated bullet in currentBullet
         //Rotate bullet to shoot direction
-        currentBullet.transform.forward = directionWithSpread.normalized;
+        currentBullet.transform.forward = direction.normalized;
 
         //Add forces to bullet
-        currentBullet.GetComponent<Rigidbody>().AddForce(directionWithSpread.normalized * shootForce, ForceMode.Impulse);
+        currentBullet.GetComponent<Rigidbody>().AddForce(direction.normalized * shootForce, ForceMode.Impulse);
         currentBullet.GetComponent<Rigidbody>().AddForce(fpsCam.transform.up * upwardForce, ForceMode.Impulse);
 
 
